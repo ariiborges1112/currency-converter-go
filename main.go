@@ -21,6 +21,25 @@ func moedaValida(moeda string) bool{
 	return false
 }
 
+func listarMoedas(){
+	fmt.Print("---LISTA DE MOEDAS---")
+	fmt.Print("[BRL] Real Brasileiro")
+	fmt.Print("[USD] Dólar Americano")
+	fmt.Print("[EUR] Euro")
+	fmt.Print("[GBP] Libra Esterlina")
+}
+
+func listarOutrasMoedas(){
+	fmt.Print("[CAD] Dólar Canadense")
+	fmt.Print("[AUD] Dólar Australiano")
+	fmt.Print("[JPY] Iene Japonês")
+	fmt.Print("[CHF] Franco Suiço")
+	fmt.Print("[CNY] Yuan Chinês")
+	fmt.Print("[ARS] Peso Argentino")
+	fmt.Print("[CLP] Peso Chileno")
+	fmt.Print("[UYU] Peso Uruguaio")
+}
+
 func main(){
 	var moedaOrigem string
 	fmt.Print("Digite o moeda de origem para conversão: [BRL, USD, EUR]: ")

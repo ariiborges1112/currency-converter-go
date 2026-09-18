@@ -110,3 +110,15 @@ func entradaDeDados() (string, string, float64){
 	return moedaOrigem, moedaDestino, valor
 }
 
+func simOuNao(escolha string) bool{
+	strings.ToLower(escolha)
+
+		switch escolha{
+			case "sim", "s":
+				return true
+			case "nao", "não", "nn", "n":
+				return false
+			default:
+				fmt.Print("Erro: Escolha errada, digite novamente!")
+		}
+}

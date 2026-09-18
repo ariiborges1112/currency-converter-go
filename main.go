@@ -7,53 +7,14 @@ import(
 	"strings"
 )
 
+var moedasPermitidas = make(map[string] int)
+
 type ExchangeRateResponse struct{
 	Rates map[string]float64 `json:"rates"`
 }
 
-func moedaValida(moeda string) bool{
-	moedasPermitidas := []string{"BRL", "USD", "EUR"}
-	for _, m := range moedasPermitidas{
-		if m == moeda{
-			return true
-		}
-	}
-	return false
-}
-
-func listarMoedas(){
-	fmt.Print("---LISTA DE MOEDAS---")
-	fmt.Print("[BRL] Real Brasileiro")
-	fmt.Print("[USD] Dólar Americano")
-	fmt.Print("[EUR] Euro")
-	fmt.Print("[GBP] Libra Esterlina")
-}
-
-func listarOutrasMoedas(){
-	fmt.Print("[CAD] Dólar Canadense")
-	fmt.Print("[AUD] Dólar Australiano")
-	fmt.Print("[JPY] Iene Japonês")
-	fmt.Print("[CHF] Franco Suiço")
-	fmt.Print("[CNY] Yuan Chinês")
-	fmt.Print("[ARS] Peso Argentino")
-	fmt.Print("[CLP] Peso Chileno")
-	fmt.Print("[UYU] Peso Uruguaio")
-}
-
 func main(){
-	var moedaOrigem string
-	fmt.Print("Digite o moeda de origem para conversão: [BRL, USD, EUR]: ")
-	fmt.Scanln(&moedaOrigem)
-	moedaOrigem = strings.ToUpper(moedaOrigem)
-
-	var valor float64
-	fmt.Printf("Digite o valor da moeda %s: ", moedaOrigem)
-	fmt.Scanln(&valor)
-
-	var moedaDestino string
-	fmt.Print("\nDigite o moeda de destino para conversão: [BRL, USD, EUR]: ")
-	fmt.Scanln(&moedaDestino)
-	moedaDestino = strings.ToUpper(moedaDestino)
+	entradaDeDados()
 
 	if !moedaValida(moedaOrigem) || !moedaValida(moedaDestino){
     	fmt.Println("Erro: Selecione apenas uma das moedas permitidas: [BRL, USD, EUR].")
@@ -82,3 +43,4 @@ func main(){
 
 	fmt.Printf("Resultado da conversão é: %.2f", resultado)
 }
+

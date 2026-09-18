@@ -17,6 +17,7 @@ type ExchangeRateResponse struct{
 }
 
 func main(){
+	limparTerminal()
 	moedaOrigem, moedaDestino, valor := entradaDeDados()
 
 	
@@ -42,6 +43,19 @@ func main(){
 	resultado := valor * taxa
 
 	fmt.Printf("Resultado da conversão é: %.2f", resultado)
+}
+
+func limparTerminal(){
+	var cmd *exec.Cmd
+
+	if runtime.GOOS == "windowns"{
+		cmd = exec.Command("cmd", "/c", "cls")
+	}else{
+		cmd = exec.Command("clear")
+	}
+
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 
 func listarMoedas(){
@@ -143,19 +157,6 @@ func entradaDeDados() (string, string, float64){
 	}
 
 	return moedaOrigem, moedaDestino, valor
-}
-
-func limparTerminal(){
-	var cmd *exec.Cmd
-	
-	if runtime.GOOS == "windowns"{
-		cmd = exec.Command("cmd", "/c", "cls")
-	}else{
-		cmd = exec.Command("clear")
-	}
-
-	cmd.Stdout = os.Stdout
-	cmd.Run()
 }
 
 func simOuNao(escolha string) bool{

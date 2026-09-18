@@ -44,3 +44,41 @@ func main(){
 	fmt.Printf("Resultado da conversão é: %.2f", resultado)
 }
 
+func listarMoedas(){
+	fmt.Print("\n---LISTA DE MOEDAS---")
+	fmt.Print("[BRL] Real Brasileiro")
+	fmt.Print("[USD] Dólar Americano")
+	fmt.Print("[EUR] Euro")
+	fmt.Print("[GBP] Libra Esterlina")
+	
+	if len(moedasPermitidas) == 0{
+		moedasPermitidas["BRL"] = 1
+		moedasPermitidas["USD"] = 2
+		moedasPermitidas["EUR"] = 3
+		moedasPermitidas["GBP"] = 4
+	}
+}
+
+func listarOutrasMoedas(){
+	fmt.Print("\n---OUTRAS MOEDAS---")
+	fmt.Print("[CAD] Dólar Canadense")
+	fmt.Print("[AUD] Dólar Australiano")
+	fmt.Print("[JPY] Iene Japonês")
+	fmt.Print("[CHF] Franco Suiço")
+	fmt.Print("[CNY] Yuan Chinês")
+	fmt.Print("[ARS] Peso Argentino")
+	fmt.Print("[CLP] Peso Chileno")
+	fmt.Print("[UYU] Peso Uruguaio")
+
+	if len(moedasPermitidas) == 4{
+		moedasPermitidas["CAD"] = 5
+		moedasPermitidas["AUD"] = 6
+		moedasPermitidas["JPY"] = 7
+		moedasPermitidas["CHF"] = 8
+		moedasPermitidas["CNY"] = 9
+		moedasPermitidas["ARS"] = 10
+		moedasPermitidas["CLP"] = 11
+		moedasPermitidas["UYU"] = 12
+	}
+}
+

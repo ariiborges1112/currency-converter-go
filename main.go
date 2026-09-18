@@ -141,23 +141,23 @@ func entradaDeDados() (string, string, float64){
 }
 
 func listarMoedas(){
-	fmt.Print("\n---LISTA DE MOEDAS---")
-	fmt.Print("[BRL] Real Brasileiro")
-	fmt.Print("[USD] Dólar Americano")
-	fmt.Print("[EUR] Euro")
-	fmt.Print("[GBP] Libra Esterlina")
+	fmt.Println("\n---LISTA DE MOEDAS---")
+	fmt.Println("[BRL] Real Brasileiro")
+	fmt.Println("[USD] Dólar Americano")
+	fmt.Println("[EUR] Euro")
+	fmt.Println("[GBP] Libra Esterlina")
 }
 
 func listarOutrasMoedas(){
-	fmt.Print("\n---OUTRAS MOEDAS---")
-	fmt.Print("[CAD] Dólar Canadense")
-	fmt.Print("[AUD] Dólar Australiano")
-	fmt.Print("[JPY] Iene Japonês")
-	fmt.Print("[CHF] Franco Suiço")
-	fmt.Print("[CNY] Yuan Chinês")
-	fmt.Print("[ARS] Peso Argentino")
-	fmt.Print("[CLP] Peso Chileno")
-	fmt.Print("[UYU] Peso Uruguaio")
+	fmt.Println("\n---OUTRAS MOEDAS---")
+	fmt.Println("[CAD] Dólar Canadense")
+	fmt.Println("[AUD] Dólar Australiano")
+	fmt.Println("[JPY] Iene Japonês")
+	fmt.Println("[CHF] Franco Suiço")
+	fmt.Println("[CNY] Yuan Chinês")
+	fmt.Println("[ARS] Peso Argentino")
+	fmt.Println("[CLP] Peso Chileno")
+	fmt.Println("[UYU] Peso Uruguaio")
 }
 
 func simOuNao(escolha string) string{

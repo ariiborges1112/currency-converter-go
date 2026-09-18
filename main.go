@@ -8,6 +8,7 @@ import(
 	"os"
 	"os/exec"
 	"runtime"
+	"time"
 )
 
 var moedasPermitidas = map[string] string{
@@ -31,35 +32,32 @@ type ExchangeRateResponse struct{
 
 func main(){
 	limparTerminal()
-	moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino := entradaDeDados()
-	
-	fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, nomeMoedaOrigem, nomeMoedaDestino)
 
-	url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
+	for{
+		sucesso := realizarConversao()
 
-	resp, err := http.Get(url)
+		if !sucesso{
+			break
+		}
 
-	if err != nil {
-		fmt.Println("Erro ao buscar taxas de câmbio:", err)
-		return
+		var escolha string
+		fmt.Print("Deseja fazer outra conversão? [sim/nao]: ")
+		fmt.Scanln(&escolha)
+
+		if simOuNao(escolha) == "sim"{
+			continue
+		}else if simOuNao(escolha) == "nao"{
+			goto Finalizar
+		}
 	}
-
-	defer resp.Body.Close()
-
-	var dados ExchangeRateResponse
-	json.NewDecoder(resp.Body).Decode(&dados)
-
-	taxa := dados.Rates[moedaDestino]
-	
-	resultado := valor * taxa
-
-	fmt.Printf("\nResultado da conversão é: %.2f\n", resultado)
+	Finalizar:
+		fmt.Println("Finalizando sistema...")
 }
 
 func limparTerminal(){
 	var cmd *exec.Cmd
 
-	if runtime.GOOS == "windons"{
+	if runtime.GOOS == "windows"{
 		cmd = exec.Command("cmd", "/c", "cls")
 	}else{
 		cmd = exec.Command("clear")
@@ -144,6 +142,59 @@ func entradaDeDados() (string, string, float64, string, string){
 	return moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino
 }
 
+func realizarConversao() bool{
+	moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino := entradaDeDados()
+	
+		fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, nomeMoedaOrigem, nomeMoedaDestino)
+
+		cliente := &http.Client{
+			Timeout: 5 * time.Second,
+		}
+
+		url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
+
+		var resp *http.Response
+		var err error
+
+		for{
+			resp, err = cliente.Get(url)
+
+			if err != nil{
+				fmt.Println("Erro de conexão ou o tempo esgotou:", err)
+			
+				var escolha string
+				for{
+					fmt.Print("\nDeseja tentar novamente? [sim/nao]: ")
+					fmt.Scanln(&escolha)
+
+					if simOuNao(escolha) == "sim"{
+						break
+					}else if simOuNao(escolha) == "nao"{
+						return false
+					}
+				}
+				continue
+			}
+			break
+		}
+
+		defer resp.Body.Close()
+
+		var dados ExchangeRateResponse
+		errDecodificacao := json.NewDecoder(resp.Body).Decode(&dados)
+
+		if errDecodificacao != nil{
+			fmt.Println("Erro ao traduzir o JSON da API:", errDecodificacao)
+			return false
+		}
+
+		taxa := dados.Rates[moedaDestino]
+		resultado := valor * taxa
+
+		fmt.Printf("\nResultado da conversão é: %.2f\n", resultado)
+		return true
+}
+
 func listarMoedas(){
 	fmt.Println("\n---LISTA DE MOEDAS---")
 	fmt.Println("[BRL] Real Brasileiro")
@@ -165,7 +216,7 @@ func listarOutrasMoedas(){
 }
 
 func simOuNao(escolha string) string{
-	strings.ToLower(escolha)
+	escolha = strings.ToLower(escolha)
 
 		switch escolha{
 			case "sim", "s":

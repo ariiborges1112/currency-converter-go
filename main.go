@@ -41,17 +41,21 @@ func main(){
 		}
 
 		var escolha string
-		fmt.Print("Deseja fazer outra conversão? [sim/nao]: ")
-		fmt.Scanln(&escolha)
 
-		if simOuNao(escolha) == "sim"{
-			continue
-		}else if simOuNao(escolha) == "nao"{
-			goto Finalizar
+		for{
+			fmt.Print("Deseja fazer outra conversão? [sim/nao]: ")
+			fmt.Scanln(&escolha)
+
+			if simOuNao(escolha) == "sim"{
+				break
+			}else if simOuNao(escolha) == "nao"{
+				goto Finalizar
+			}
 		}
 	}
+
 	Finalizar:
-		fmt.Println("Finalizando sistema...")
+		fmt.Println("\nFinalizando sistema...")
 }
 
 func limparTerminal(){

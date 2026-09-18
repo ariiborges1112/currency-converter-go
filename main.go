@@ -5,6 +5,9 @@ import(
 	"encoding/json"
 	"net/http"
 	"strings"
+	"os"
+	"os/exec"
+	"runtime"
 )
 
 var moedasPermitidas = make(map[string] int)
@@ -14,8 +17,10 @@ type ExchangeRateResponse struct{
 }
 
 func main(){
-	entradaDeDados()
+	moedaOrigem, moedaDestino, valor := entradaDeDados()
 
+	
+	
 	fmt.Printf("\nConvertendo %.2f de %s para %s...\n", valor, moedaOrigem, moedaDestino)
 
 	url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
@@ -99,7 +104,7 @@ func entradaDeDados() (string, string, float64){
 			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaOrigem)
 			continue
 		}
-		
+
 		break
 	}
 

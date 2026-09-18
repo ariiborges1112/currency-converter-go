@@ -97,7 +97,7 @@ func entradaDeDados() (string, string, float64, string, string){
 		moedaOrigem = strings.ToUpper(moedaOrigem)
 		
 		if _, existe := moedasPermitidas[moedaOrigem]; !existe{
-			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaOrigem)
+			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!\n", moedaOrigem)
 			continue
 		}
 
@@ -112,7 +112,7 @@ func entradaDeDados() (string, string, float64, string, string){
 		fmt.Scanln(&valor)
 
 		if valor <= 0.0{
-			fmt.Print("O valor não pode ser igual ou menor que 0!")
+			fmt.Print("O valor não pode ser igual ou menor que 0!\n")
 			continue
 		}
 
@@ -128,12 +128,12 @@ func entradaDeDados() (string, string, float64, string, string){
 		moedaDestino = strings.ToUpper(moedaDestino)
 
 		if _, existe := moedasPermitidas[moedaDestino]; !existe{
-			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaDestino)
+			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!\n", moedaDestino)
 			continue
 		}
 
 		if moedaDestino == moedaOrigem{
-			fmt.Printf("A moeda de comparação não pode ser a mesma a ser comparada! Ambas são [%s] %s!", moedaOrigem, nomeMoedaOrigem)
+			fmt.Printf("A moeda de comparação não pode ser a mesma a ser comparada! Ambas são [%s] %s!\n", moedaOrigem, nomeMoedaOrigem)
 			continue
 		}
 
@@ -173,7 +173,7 @@ func simOuNao(escolha string) string{
 			case "nao", "não", "nn", "n":
 				return "nao"
 			default:
-				fmt.Print("Erro: Escolha errada, digite novamente!")
+				fmt.Print("Erro: Escolha errada, digite novamente!\n")
 				return "input inválido"
 		}
 }

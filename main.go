@@ -82,3 +82,31 @@ func listarOutrasMoedas(){
 	}
 }
 
+func entradaDeDados() (string, string, float64){
+	listarMoedas()
+
+	var escolha string
+	fmt.Print("Deseja listar os outros tipos de moedas? [sim/nao] ")
+	fmt.Scanln(&escolha)
+
+	if simOuNao(escolha){
+		listarOutrasMoedas()
+	}
+
+	var moedaOrigem string
+	fmt.Print("\nDigite o moeda de origem para conversão: [BRL, USD, EUR...]: ")
+	fmt.Scanln(&moedaOrigem)
+	moedaOrigem = strings.ToUpper(moedaOrigem)
+
+	var valor float64
+	fmt.Printf("Digite o valor a ser comparado da moeda [%s]: ", moedaOrigem)
+	fmt.Scanln(&valor)
+
+	var moedaDestino string
+	fmt.Print("\nDigite o moeda de destino para conversão: [BRL, USD, EUR...]: ")
+	fmt.Scanln(&moedaDestino)
+	moedaDestino = strings.ToUpper(moedaDestino)
+
+	return moedaOrigem, moedaDestino, valor
+}
+

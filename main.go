@@ -46,9 +46,11 @@ func main(){
 			fmt.Print("Deseja fazer outra conversão? [sim/nao]: ")
 			fmt.Scanln(&escolha)
 
-			if simOuNao(escolha) == "sim"{
+			status := simOuNao(escolha)
+
+			if status == "sim"{
 				break
-			}else if simOuNao(escolha) == "nao"{
+			}else if status == "nao"{
 				goto Finalizar
 			}
 		}
@@ -80,13 +82,13 @@ func entradaDeDados() (string, string, float64, string, string){
 		fmt.Print("\nDeseja listar os outros tipos de moedas? [sim/nao] ")
 		fmt.Scanln(&escolha)
 
-		if simOuNao(escolha) == "sim"{
+		status := simOuNao(escolha)
+
+		if status == "sim"{
 			listarOutrasMoedas()
 			break
-		} else if simOuNao(escolha) == "nao"{
+		} else if status == "nao"{
 			break
-		} else if simOuNao(escolha) == "input inválido"{
-			continue
 		}
 	}
 
@@ -171,9 +173,11 @@ func realizarConversao() bool{
 					fmt.Print("\nDeseja tentar novamente? [sim/nao]: ")
 					fmt.Scanln(&escolha)
 
-					if simOuNao(escolha) == "sim"{
+					status := simOuNao(escolha)
+
+					if status == "sim"{
 						break
-					}else if simOuNao(escolha) == "nao"{
+					}else if status == "nao"{
 						return false
 					}
 				}

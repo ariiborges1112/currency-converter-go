@@ -19,10 +19,8 @@ type ExchangeRateResponse struct{
 func main(){
 	limparTerminal()
 	moedaOrigem, moedaDestino, valor := entradaDeDados()
-
 	
-	
-	fmt.Printf("\nConvertendo %.2f de %s para %s...\n", valor, moedaOrigem, moedaDestino)
+	fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, moedaOrigem, moedaDestino)
 
 	url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
 
@@ -58,53 +56,23 @@ func limparTerminal(){
 	cmd.Run()
 }
 
-func listarMoedas(){
-	fmt.Print("\n---LISTA DE MOEDAS---")
-	fmt.Print("[BRL] Real Brasileiro")
-	fmt.Print("[USD] Dólar Americano")
-	fmt.Print("[EUR] Euro")
-	fmt.Print("[GBP] Libra Esterlina")
-	
-	if len(moedasPermitidas) == 0{
-		moedasPermitidas["BRL"] = 1
-		moedasPermitidas["USD"] = 2
-		moedasPermitidas["EUR"] = 3
-		moedasPermitidas["GBP"] = 4
-	}
-}
-
-func listarOutrasMoedas(){
-	fmt.Print("\n---OUTRAS MOEDAS---")
-	fmt.Print("[CAD] Dólar Canadense")
-	fmt.Print("[AUD] Dólar Australiano")
-	fmt.Print("[JPY] Iene Japonês")
-	fmt.Print("[CHF] Franco Suiço")
-	fmt.Print("[CNY] Yuan Chinês")
-	fmt.Print("[ARS] Peso Argentino")
-	fmt.Print("[CLP] Peso Chileno")
-	fmt.Print("[UYU] Peso Uruguaio")
-
-	if len(moedasPermitidas) == 4{
-		moedasPermitidas["CAD"] = 5
-		moedasPermitidas["AUD"] = 6
-		moedasPermitidas["JPY"] = 7
-		moedasPermitidas["CHF"] = 8
-		moedasPermitidas["CNY"] = 9
-		moedasPermitidas["ARS"] = 10
-		moedasPermitidas["CLP"] = 11
-		moedasPermitidas["UYU"] = 12
-	}
-}
-
 func entradaDeDados() (string, string, float64){
 	listarMoedas()
 
 	var escolha string
-	fmt.Print("Deseja listar os outros tipos de moedas? [sim/nao] ")
-	fmt.Scanln(&escolha)
 
-	if simOuNao(escolha){
-		listarOutrasMoedas()
+	for{
+		fmt.Print("Deseja listar os outros tipos de moedas? [sim/nao] ")
+		fmt.Scanln(&escolha)
+
+		if simOuNao(escolha) == "sim"{
+			listarOutrasMoedas()
+			break
+		} else if simOuNao(escolha) == "nao"{
+			break
+		} else if simOuNao(escolha) == "input inválido"{
+			continue
+		}
 	}
 
 	var moedaOrigem string
@@ -159,15 +127,54 @@ func entradaDeDados() (string, string, float64){
 	return moedaOrigem, moedaDestino, valor
 }
 
-func simOuNao(escolha string) bool{
+func listarMoedas(){
+	fmt.Print("\n---LISTA DE MOEDAS---")
+	fmt.Print("[BRL] Real Brasileiro")
+	fmt.Print("[USD] Dólar Americano")
+	fmt.Print("[EUR] Euro")
+	fmt.Print("[GBP] Libra Esterlina")
+	
+	if len(moedasPermitidas) == 0{
+		moedasPermitidas["BRL"] = 1
+		moedasPermitidas["USD"] = 2
+		moedasPermitidas["EUR"] = 3
+		moedasPermitidas["GBP"] = 4
+	}
+}
+
+func listarOutrasMoedas(){
+	fmt.Print("\n---OUTRAS MOEDAS---")
+	fmt.Print("[CAD] Dólar Canadense")
+	fmt.Print("[AUD] Dólar Australiano")
+	fmt.Print("[JPY] Iene Japonês")
+	fmt.Print("[CHF] Franco Suiço")
+	fmt.Print("[CNY] Yuan Chinês")
+	fmt.Print("[ARS] Peso Argentino")
+	fmt.Print("[CLP] Peso Chileno")
+	fmt.Print("[UYU] Peso Uruguaio")
+
+	if len(moedasPermitidas) == 4{
+		moedasPermitidas["CAD"] = 5
+		moedasPermitidas["AUD"] = 6
+		moedasPermitidas["JPY"] = 7
+		moedasPermitidas["CHF"] = 8
+		moedasPermitidas["CNY"] = 9
+		moedasPermitidas["ARS"] = 10
+		moedasPermitidas["CLP"] = 11
+		moedasPermitidas["UYU"] = 12
+	}
+}
+
+func simOuNao(escolha string) string{
 	strings.ToLower(escolha)
 
 		switch escolha{
 			case "sim", "s":
-				return true
+				return "sim"
 			case "nao", "não", "nn", "n":
-				return false
+				return "nao"
 			default:
 				fmt.Print("Erro: Escolha errada, digite novamente!")
+				return "input inválido"
 		}
 }

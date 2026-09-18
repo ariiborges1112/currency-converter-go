@@ -16,11 +16,6 @@ type ExchangeRateResponse struct{
 func main(){
 	entradaDeDados()
 
-	if !moedaValida(moedaOrigem) || !moedaValida(moedaDestino){
-    	fmt.Println("Erro: Selecione apenas uma das moedas permitidas: [BRL, USD, EUR].")
-    	return
-	}
-
 	fmt.Printf("\nConvertendo %.2f de %s para %s...\n", valor, moedaOrigem, moedaDestino)
 
 	url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
@@ -104,6 +99,7 @@ func entradaDeDados() (string, string, float64){
 			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaOrigem)
 			continue
 		}
+		
 		break
 	}
 
@@ -117,6 +113,7 @@ func entradaDeDados() (string, string, float64){
 			fmt.Print("O valor não pode ser igual ou menor que 0!")
 			continue
 		}
+
 		break
 	}
 
@@ -131,9 +128,15 @@ func entradaDeDados() (string, string, float64){
 			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaDestino)
 			continue
 		}
+
+		if moedaDestino == moedaOrigem{
+			fmt.Printf("A moeda de comparação não pode ser a mesma a ser comparada! Ambas são [%s]!", moedaOrigem)
+			continue
+		}
+
 		break
 	}
-	
+
 	return moedaOrigem, moedaDestino, valor
 }
 

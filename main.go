@@ -94,19 +94,46 @@ func entradaDeDados() (string, string, float64){
 	}
 
 	var moedaOrigem string
-	fmt.Print("\nDigite o moeda de origem para conversão: [BRL, USD, EUR...]: ")
-	fmt.Scanln(&moedaOrigem)
-	moedaOrigem = strings.ToUpper(moedaOrigem)
+
+	for{
+		fmt.Print("\nDigite o moeda de origem para conversão: [BRL, USD, EUR...]: ")
+		fmt.Scanln(&moedaOrigem)
+		moedaOrigem = strings.ToUpper(moedaOrigem)
+		
+		if _, existe := moedasPermitidas[moedaOrigem]; !existe{
+			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaOrigem)
+			continue
+		}
+		break
+	}
 
 	var valor float64
-	fmt.Printf("Digite o valor a ser comparado da moeda [%s]: ", moedaOrigem)
-	fmt.Scanln(&valor)
+
+	for{
+		fmt.Printf("Digite o valor a ser comparado da moeda [%s]: ", moedaOrigem)
+		fmt.Scanln(&valor)
+
+		if valor <= 0.0{
+			fmt.Print("O valor não pode ser igual ou menor que 0!")
+			continue
+		}
+		break
+	}
 
 	var moedaDestino string
-	fmt.Print("\nDigite o moeda de destino para conversão: [BRL, USD, EUR...]: ")
-	fmt.Scanln(&moedaDestino)
-	moedaDestino = strings.ToUpper(moedaDestino)
 
+	for{
+		fmt.Print("\nDigite o moeda de destino para conversão: [BRL, USD, EUR...]: ")
+		fmt.Scanln(&moedaDestino)
+		moedaDestino = strings.ToUpper(moedaDestino)
+
+		if _, existe := moedasPermitidas[moedaDestino]; !existe{
+			fmt.Printf("A moeda [%s] não foi encontrada, digite novamente!", moedaDestino)
+			continue
+		}
+		break
+	}
+	
 	return moedaOrigem, moedaDestino, valor
 }
 

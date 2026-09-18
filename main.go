@@ -73,6 +73,62 @@ func limparTerminal(){
 	cmd.Run()
 }
 
+
+func realizarConversao() bool{
+	moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino := entradaDeDados()
+	
+		fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, nomeMoedaOrigem, nomeMoedaDestino)
+
+		cliente := &http.Client{
+			Timeout: 5 * time.Second,
+		}
+
+		url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
+
+		var resp *http.Response
+		var err error
+
+		for{
+			resp, err = cliente.Get(url)
+
+			if err != nil{
+				fmt.Println("Erro de conexão ou o tempo esgotou:", err)
+			
+				var escolha string
+				for{
+					fmt.Print("\nDeseja tentar novamente? [sim/nao]: ")
+					fmt.Scanln(&escolha)
+
+					status := simOuNao(escolha)
+
+					if status == "sim"{
+						break
+					}else if status == "nao"{
+						return false
+					}
+				}
+				continue
+			}
+			break
+		}
+
+		defer resp.Body.Close()
+
+		var dados ExchangeRateResponse
+		errDecodificacao := json.NewDecoder(resp.Body).Decode(&dados)
+
+		if errDecodificacao != nil{
+			fmt.Println("Erro ao traduzir o JSON da API:", errDecodificacao)
+			return false
+		}
+
+		taxa := dados.Rates[moedaDestino]
+		resultado := valor * taxa
+
+		fmt.Printf("\nResultado da conversão é: %.2f\n", resultado)
+		return true
+}
+
 func entradaDeDados() (string, string, float64, string, string){
 	listarMoedas()
 
@@ -146,61 +202,6 @@ func entradaDeDados() (string, string, float64, string, string){
 	}
 
 	return moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino
-}
-
-func realizarConversao() bool{
-	moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino := entradaDeDados()
-	
-		fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, nomeMoedaOrigem, nomeMoedaDestino)
-
-		cliente := &http.Client{
-			Timeout: 5 * time.Second,
-		}
-
-		url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
-
-		var resp *http.Response
-		var err error
-
-		for{
-			resp, err = cliente.Get(url)
-
-			if err != nil{
-				fmt.Println("Erro de conexão ou o tempo esgotou:", err)
-			
-				var escolha string
-				for{
-					fmt.Print("\nDeseja tentar novamente? [sim/nao]: ")
-					fmt.Scanln(&escolha)
-
-					status := simOuNao(escolha)
-
-					if status == "sim"{
-						break
-					}else if status == "nao"{
-						return false
-					}
-				}
-				continue
-			}
-			break
-		}
-
-		defer resp.Body.Close()
-
-		var dados ExchangeRateResponse
-		errDecodificacao := json.NewDecoder(resp.Body).Decode(&dados)
-
-		if errDecodificacao != nil{
-			fmt.Println("Erro ao traduzir o JSON da API:", errDecodificacao)
-			return false
-		}
-
-		taxa := dados.Rates[moedaDestino]
-		resultado := valor * taxa
-
-		fmt.Printf("\nResultado da conversão é: %.2f\n", resultado)
-		return true
 }
 
 func listarMoedas(){

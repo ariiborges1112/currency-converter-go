@@ -31,9 +31,9 @@ type ExchangeRateResponse struct{
 
 func main(){
 	limparTerminal()
-	moedaOrigem, moedaDestino, valor := entradaDeDados()
+	moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino := entradaDeDados()
 	
-	fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, moedaOrigem, moedaDestino)
+	fmt.Printf("\nConvertendo %.2f em %s para %s...\n", valor, nomeMoedaOrigem, nomeMoedaDestino)
 
 	url := fmt.Sprintf("https://open.er-api.com/v6/latest/%s", moedaOrigem)
 
@@ -53,7 +53,7 @@ func main(){
 	
 	resultado := valor * taxa
 
-	fmt.Printf("\nResultado da conversão é: %.2f", resultado)
+	fmt.Printf("\nResultado da conversão é: %.2f\n", resultado)
 }
 
 func limparTerminal(){
@@ -69,13 +69,13 @@ func limparTerminal(){
 	cmd.Run()
 }
 
-func entradaDeDados() (string, string, float64){
+func entradaDeDados() (string, string, float64, string, string){
 	listarMoedas()
 
 	var escolha string
 
 	for{
-		fmt.Print("Deseja listar os outros tipos de moedas? [sim/nao] ")
+		fmt.Print("\nDeseja listar os outros tipos de moedas? [sim/nao] ")
 		fmt.Scanln(&escolha)
 
 		if simOuNao(escolha) == "sim"{
@@ -89,6 +89,7 @@ func entradaDeDados() (string, string, float64){
 	}
 
 	var moedaOrigem string
+	var nomeMoedaOrigem string
 
 	for{
 		fmt.Print("\nDigite o moeda de origem para conversão: [BRL, USD, EUR...]: ")
@@ -100,13 +101,14 @@ func entradaDeDados() (string, string, float64){
 			continue
 		}
 
+		nomeMoedaOrigem = moedasPermitidas[moedaOrigem]
 		break
 	}
 
 	var valor float64
 
 	for{
-		fmt.Printf("Digite o valor a ser comparado da moeda [%s]: ", moedaOrigem)
+		fmt.Printf("Digite o valor a ser comparado da moeda [%s] %s: ", moedaOrigem, nomeMoedaOrigem)
 		fmt.Scanln(&valor)
 
 		if valor <= 0.0{
@@ -118,9 +120,10 @@ func entradaDeDados() (string, string, float64){
 	}
 
 	var moedaDestino string
+	var nomeMoedaDestino string
 
 	for{
-		fmt.Print("\nDigite o moeda de destino para conversão: [BRL, USD, EUR...]: ")
+		fmt.Print("Digite o moeda de destino para conversão: [BRL, USD, EUR...]: ")
 		fmt.Scanln(&moedaDestino)
 		moedaDestino = strings.ToUpper(moedaDestino)
 
@@ -130,14 +133,15 @@ func entradaDeDados() (string, string, float64){
 		}
 
 		if moedaDestino == moedaOrigem{
-			fmt.Printf("A moeda de comparação não pode ser a mesma a ser comparada! Ambas são [%s]!", moedaOrigem)
+			fmt.Printf("A moeda de comparação não pode ser a mesma a ser comparada! Ambas são [%s] %s!", moedaOrigem, nomeMoedaOrigem)
 			continue
 		}
 
+		nomeMoedaDestino = moedasPermitidas[moedaDestino]
 		break
 	}
 
-	return moedaOrigem, moedaDestino, valor
+	return moedaOrigem, moedaDestino, valor, nomeMoedaOrigem, nomeMoedaDestino
 }
 
 func listarMoedas(){
